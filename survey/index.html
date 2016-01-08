@@ -149,7 +149,7 @@
 	</div>
   
 <!-- load the d3.js library -->	
-<script ssrc="//d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
 var host = 'http://sparika.github.io/survey/'
@@ -157,7 +157,7 @@ var currentPage = 0, maxPage
 
 var config = [{
   model:{
-    url:host+"tlsViz.json",
+    url:"tlsViz.json",
     width:"800",
     height:"500",
 	title:"<h2>First Model</h2>",
@@ -171,7 +171,7 @@ var config = [{
   }},
 {
   model:{
-    url:host+"oidcViz.json",
+    url:"oidcViz.json",
     width:"800",
     height:"500",
 	title:"<h2>Second Model</h2>",
@@ -179,7 +179,7 @@ var config = [{
   },
   
   form:{
-    url:host,
+    url:'http://base-echo.net',
     width:"800",
     height:"500"
   }
@@ -204,8 +204,8 @@ function loadPage(pageNumber){
   document.getElementById("title-span").innerHTML = model.title;
   document.getElementById("descr-span").innerHTML = model.descr;
   
-  // Read and Load Model File
-  readModelFile(model.url)
+  // Read and Load Model 
+  readModelFile(host+model.url)
   
   // Set Form
   document.getElementById("form-iframe").setAttribute("src", form.url)
@@ -217,12 +217,17 @@ function loadNextPage() {
 }
   
 function readModelFile(url) {
+  console.log(url)
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
+	console.log("waiting")
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         var json = JSON.parse(xmlhttp.responseText);
+		console.log(json)
         reloadTrustModel(json);
-    }
+    } else {
+	  console.log(xmlhttp.status+ " " + xmlhttp.readyState)
+	}
   };
   xmlhttp.open("GET", url, true);
 }
