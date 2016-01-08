@@ -217,19 +217,15 @@ function loadNextPage() {
 }
   
 function readModelFile(url) {
-  console.log(url)
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
-	console.log("waiting")
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         var json = JSON.parse(xmlhttp.responseText);
-		console.log(json)
         reloadTrustModel(json);
-    } else {
-	  console.log(xmlhttp.status+ " " + xmlhttp.readyState)
-	}
+    } 
   };
   xmlhttp.open("GET", url, true);
+  xmlhttp.send();
 }
 
 //document.getElementById('file-input')
