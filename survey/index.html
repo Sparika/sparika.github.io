@@ -232,12 +232,12 @@ function loadNextPage() {
   loadPage(currentPage+1)
 }
   
-function readModelFile(url) {
+function readModelFile(url, width, height) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         var json = JSON.parse(xmlhttp.responseText);
-        reloadTrustModel(json);
+        reloadTrustModel(json, width, height);
     } 
   };
   xmlhttp.open("GET", url, true);
