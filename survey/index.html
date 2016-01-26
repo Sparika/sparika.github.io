@@ -157,7 +157,7 @@ var currentPage = 0, maxPage
 
 var config = [{
   model:{
-    url:"nullViz.json",
+    url:"",
     width:"0",
     height:"0",
 	title:"<h2>Objective of this survey</h2>",
@@ -173,7 +173,7 @@ var config = [{
   model:{
     url:"tlsViz.json",
     width:"800",
-    height:"500",
+    height:"600",
 	title:"<h2>First Model</h2>",
 	descr:"<b>Dolorem</b> Ipsum patatipatata </p>"
   },
@@ -187,7 +187,7 @@ var config = [{
   model:{
     url:"oidcViz.json",
     width:"800",
-    height:"500",
+    height:"450",
 	title:"<h2>Second Model</h2>",
 	descr:"<b>Dolorem</b> Ipsum patatipatata etc etc etc etc </p>"
   },
@@ -233,15 +233,21 @@ function loadNextPage() {
 }
   
 function readModelFile(url, width, height) {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        var json = JSON.parse(xmlhttp.responseText);
-        reloadTrustModel(json, width, height);
-    } 
-  };
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
+  //Null model
+  if (height == 0) {
+	clearModel()
+  } else {
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	  if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		  var json = JSON.parse(xmlhttp.responseText);
+		  reloadTrustModel(json, width, height);
+	  } 
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+  }
+
 }
 
 //document.getElementById('file-input')

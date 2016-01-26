@@ -3,13 +3,11 @@
 var margin = {top: 60, right: 60, bottom: 60, left: 60},
 	width = 800 - margin.right - margin.left,
 	height = 800 - margin.top - margin.bottom;
-	
-var i = 0;
-var tree = d3.layout.tree()
-.size([width, height]); //Reversed for vertical
+
 var diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
-	
+
+var i = 0;
 	
 var rOperator = 6,
 	vMax = 2048,
@@ -54,13 +52,7 @@ divData.append("input")
     .style("width", "80px")
     .style("text-align", "right")
     
-// SVG
-var svg = d3.select("#viz-div").append("svg")
-	.attr("width", "100%")// width + margin.right + margin.left)
-	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	.style("z-index", 0)
-    
+        
 d3.select("body:not(#setEntropy-div)")
 	.on("click",function(d){
    	divData.transition()        
@@ -68,7 +60,6 @@ d3.select("body:not(#setEntropy-div)")
        	.style("opacity", 0)
   })
 
-svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.select("#setEntropy").on("input", function() {
   //vMax = 1
@@ -79,9 +70,25 @@ d3.select("#setEntropy").on("input", function() {
   updateTrust(root,this.nodename,parseInt(this.value))
   update(root)
 });
+ 
 
+// SVG and TREE and SIZE
+var svg, tree = d3.layout.tree()
+function initSVG(newWidth, newHeight) {
+  newHeight = newHeight - margin.top - margin.bottom
+  height = newHeight > 0 ? newHeight : 0
 
-// svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  tree =tree.size([width, height]);
+  
+  svg = d3.select("#viz-div").append("svg")
+      .style("width", "100%")// width + margin.right + margin.left)
+      .style("height", height + margin.top + margin.bottom + "px")
+      .append("g")
+      .style("z-index", 0)
+      
+  svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+}
 
 function update(source) {
 	
@@ -447,19 +454,16 @@ function applyTrust(value, trustW){
 }
 
 function reloadTrustModel(jsonModel, newWidth, newHeight){
-  //update size
-  tree = tree.size([newWidth, newHeight]);
-  width = newWidth - margin.left - margin.right
-  //svg.attr("width", "100%")// width + margin.right + margin.left)
-  height = newHeight - margin.top - margin.bottom
-  svg.attr("height", height + margin.top + margin.bottom)
-  console.log("update height with "+newHeight)
-  
-    svg.selectAll("g > *").remove();
+  clearModel()
+  initSVG(newWidth, newHeight)
+    //svg.selectAll("g > *").remove();
     model = jsonModel
     root = model.model
     trust = model.trust
     updateTrust(root, blue)
     update(root);
 }
-//updateTrust(trustModel[0], 1)
+
+function clearModel() {
+  d3.select("#viz-div").select("svg").remove()
+}
