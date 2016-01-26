@@ -3,18 +3,26 @@
 var margin = {top: 60, right: 60, bottom: 60, left: 60},
 	width = 800 - margin.right - margin.left,
 	height = 800 - margin.top - margin.bottom;
-
+	
+var i = 0;
 var diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
-
-var i = 0;
+	
 	
 var rOperator = 6,
 	vMax = 2048,
 	vPMax = 1,
-	rBase = 20,
+	rBase = 10,
 	depth = 90
     
+var minEntropy = {
+    'symmetric' : 100,
+    'modulus' : 2048,
+    'logarithmKey' : 200,
+    'logarithmGrp' : 2048,
+    'ec' : 200,
+    'hash' : 200
+}
 // Reference to model
 var root, model, trust
 	
@@ -30,36 +38,59 @@ var divData = d3.select("#viz-div").append("div")
     .attr("class", "setData")
     .attr("id", "setEntropy-div")
     .style("opacity", 0)
+    
+    
+var divText = divData.append("div")
+var divInput = divData.append("div")
 
-divData.append("label")
+divText.append("label")
+    .attr("id", "setEntropy-name")
+    .style("display", "block")
+    .style("text-align", "left")
+    .style("position", "relative")
+    .style("bottom", "0px")
+    .style("left", "5px")
+    .style("width", "130px")
+    .text("...")
+divText.append("label")
+    .attr("id", "setEntropy-min")
+    .style("display", "block")
+    .style("text-align", "left")
+    .style("position", "relative")
+    .style("bottom", "-2px")
+    .style("left", "5px")
+    .style("width", "130px")
+    .text("...")
+
+divInput.append("label")
+    .attr("id", "setEntropy-value")
     .style("display", "inline-block")
     .style("text-align", "right")
     .style("position", "relative")
-    .style("bottom", "9px")
+    .style("bottom", "0px")
     .style("left", "5px")
     .style("width", "50px")
     .append("span")
-    .attr("id", "setEntropy-value")
     .text("...")
     .attr("for", "setEntropy")
     
-divData.append("input")
+divInput.append("input")
+    .attr("id", "setEntropy")
     .attr("type", "range")
     .attr("min", "0")
     .attr("max", "4096")
-    .attr("id", "setEntropy")
     .attr("value", "0")
     .style("width", "80px")
     .style("text-align", "right")
+    .style("position", "relative")
+    .style("bottom", "-5px")
     
-        
 d3.select("body:not(#setEntropy-div)")
 	.on("click",function(d){
    	divData.transition()        
        	.duration(500)      
        	.style("opacity", 0)
   })
-
 
 d3.select("#setEntropy").on("input", function() {
   //vMax = 1
@@ -70,7 +101,7 @@ d3.select("#setEntropy").on("input", function() {
   updateTrust(root,this.nodename,parseInt(this.value))
   update(root)
 });
- 
+
 
 // SVG and TREE and SIZE
 var svgFixed = d3.select("#viz-div").append("svg"),
@@ -114,22 +145,22 @@ function update(source) {
   // ENTER
   nodeEnter.append("circle")
 	  .attr("id", "entropyCircle")
-	  .style("fill", function(d){
-		  if(d.children == undefined && d.aux_children == undefined) return "#32CD32"
-		  else return "#4682B4"
-	  })
-	  .style("stroke", function(d){
-		  if(d.children == undefined && d.aux_children == undefined) return "#32CD32"
-		  else return "#4682B4"
-	  })
-	  .on("mouseover", function(d) {      
-            div.transition()        
-                .duration(200)      
-                .style("opacity", .9)
-            div.html(d.value + " bits")
-            	.style("left", d.x + Math.sqrt((d.rNorm*d.rNorm)/2)+ 2* rOperator + margin.left + 2 +"px")     
-            	.style("top", d.y + Math.sqrt((d.rNorm*d.rNorm)/2) + margin.top + 10 +"px") 
-      })   
+      .attr("r",function(d){
+        if(d.op !== undefined)
+          d.rNorm = rBase*2
+        else
+          d.rNorm = rBase
+          
+        return d.rNorm
+      })
+//	  .on("mouseover", function(d) {      
+//            div.transition()        
+//                .duration(200)      
+//                .style("opacity", .9)
+//            div.html(d.value + " bits")
+//            	.style("left", d.x + Math.sqrt((d.rNorm*d.rNorm)/2)+ 2* rOperator + margin.left + 2 +"px")     
+//            	.style("top", d.y + Math.sqrt((d.rNorm*d.rNorm)/2) + margin.top + 10 +"px") 
+//      })   
       .on("mouseout", function(d) {       
             div.transition()        
                 .duration(500)      
@@ -146,30 +177,34 @@ function update(source) {
             	.style("opacity", .9)
           	divData.style("left", d.x + Math.sqrt((d.rNorm*d.rNorm)/2)+ 2* rOperator + margin.left + 2 +"px")     
             	.style("top", d.y + Math.sqrt((d.rNorm*d.rNorm)/2) + margin.top + 10 +"px")
+            
+			d3.select("#setEntropy-name")
+				.text("Category: "+d.type)
+			d3.select("#setEntropy-min")
+				.text("MinRec: "+minEntropy[d.type]+" bits")
 			d3.select("#setEntropy")
-				.property("value", d.value)
+				.property("value", d.bits)
+				.property("max", minEntropy[d.type]*2 > d.bits ? minEntropy[d.type]*2 : d.bits)
 				.property("nodename", d.name)
 			d3.select("#setEntropy-value")
-				.text(d.value+" bits")
+				.text(d.bits+" bits")
 		}
 	  })
   // UPDATE  
   node.selectAll("#entropyCircle")
-	  .attr("r", function(d){
-		  d.rNorm = (d.value/vMax) * rBase
-		  if (d.rNorm > rBase) {
-			console.log("Too big circle!")
-			console.log(d)
-			console.log(vMax)
-		  }
-		  return d.rNorm = (d.rNorm >= 5 ? d.rNorm : 5)
+	  .style("fill", function(d){
+          return setNodeColor(d)
 	  })
+	  .style("stroke", function(d){
+          return setNodeColor(d)
+	  })
+      
   // OPERATOR CIRCLE
   // ENTER  
   var trans = Math.sqrt((rOperator*rOperator)/6)
-  nodeEnter.append("circle")
+  nodeEnter.filter(function(d){ return (d.op !== "null" && d.op !== undefined)})
+      .append("circle")
 	  .attr("id", "op-symbol")
-	  .filter(function(d){ return (d.op !== "null" && d.op !== undefined)})
 	  .attr("r", rOperator)
 	  .style("fill", "#FFFFFF")
 	  .style("stroke", "#000000")
@@ -249,25 +284,80 @@ function update(source) {
 	  .attr("transform", translateOpNode);
 	  
 	  
-// NODE TITLE
-  nodeEnter.append("text")
+// COMPONENT NODE TITLE
+  nodeEnter
+    .filter(function(d){ return (d.op !== undefined)})
+    // NAME LABEL
+    .append("text")
 	  .attr("id", "node-name")	  
-	  .attr("x", 0)
-	  .attr("text-anchor", "middle")
-	  .text(function(d) { 
-		  if(d.altname == undefined){
-		  	return (d.name)
-		  } else {
-			  if(d.X == undefined){
-			  	  return (d.altname)
-			  } else {
-				  return (d.altname+"("+d.X+","+d.Y+")")
-			  }
-		  }})
+	  .attr("x", 0)	
+	  .attr("dy", 5)	 
+	  .attr("text-anchor", "middle")	
+	  .text(function(d) {
+        var text = d.altname || d.name
+        if(d.op !== undefined)
+          return text
+        if (d.X !== undefined) {
+          text += '('+d.X+','+d.Y+')'
+        }
+        return text
+      })
 	  .style("fill-opacity", 1)
+      
+// REQUIREMENT NODE TITLE
+  nodeEnter
+    .filter(function(d){ return (d.op == undefined)})
+    // NAME LABEL
+    .append("text")
+	  .attr("id", "node-name")	  
+	  .attr("x", 15 )	
+	  .attr("dy", 0 )	 
+	  .attr("text-anchor", "left")	
+	  .text(function(d) {
+        var text = d.altname || d.name
+        if(d.op !== undefined)
+          return text
+        if (d.X !== undefined) {
+          text += '('+d.X+','+d.Y+')'
+        }
+        return text
+      })
+	  .style("fill-opacity", 1)
+  nodeEnter
+    .filter(function(d){ return (d.op == undefined)})
+    // NAME LABEL
+    .append("text")
+	  .attr("id", "value-label")	  
+	  .attr("x", 25 )	
+	  .attr("dy", 15 )	 
+	  .attr("text-anchor", "left")	
+	  .text(function(d) {
+        return "t= "+d.value
+      })
+	  .style("fill-opacity", 1)
+  nodeEnter
+    .filter(function(d){ return (d.op == undefined)})
+    // NAME LABEL
+    .append("text")
+	  .attr("id", "wvalue-label")	  
+	  .attr("x", 25 )	
+	  .attr("dy", 30 )	 
+	  .attr("text-anchor", "left")	
+	  .text(function(d) {
+        return "wt= "+d.value
+      })
+	  .style("fill-opacity", 1)
+      
+      
   // UPDATE
-  node.selectAll("#node-name")
-	  .attr("dy", function(d){ return - d.rNorm -5})	  
+  node.selectAll("#value-label") 
+	  .text(function(d) {
+        return "t= "+d.value
+      })
+  node.selectAll("#wvalue-label") 
+	  .text(function(d) {
+        return "wt= "+d.value
+      })
 		  
   // Declare the links…
   var link = svg.selectAll("path.link")
@@ -279,25 +369,28 @@ function update(source) {
 }
 
 function updateTrust(node, name, update){
-	//Leaf
+	// UPDATE LEAF VALUE (PRIMITIVE)
 	if(node.children == undefined && node.aux_children == undefined){
-	  if(node.blue == blue){	
-	  //Blue means Already updated
-		console.log("red "+node.name)
+	  if(node.blue == blue){
+        //Blue means Already updated
 		return node.value
 	  }
+      //else red (not yet updated)
+      //set to blue and update
+	  node.blue = blue
 	  node.isLeaf = true
 	  if(update != undefined && node.name == name){
-	  	node.value = update
-	  } else if(node.value == undefined){
-	  	node.value = 0
-	  } //else do nothing
-	//Node
+        normNodeValue(node, update)
+      }else if(update == undefined){
+        //FIRST PASS
+        initNodeValue(node)
+	  }
+      
+	// UPDATE NODE (COMPONENT AND REQUIREMENT)
 	} else if(node.blue == blue){	
-	//Blue means Already updated
-		console.log("red "+node.name)
-		return node.value
-	} else {
+      //Blue means Already updated
+      return node.value
+	} else {      
 		//Update children
 		if(node.children != undefined) for(var i=0; i<node.children.length; i++){
 			updateTrust(node.children[i], name, update)
@@ -327,13 +420,7 @@ function updateTrust(node, name, update){
 				node.aux_children.forEach(MIN, node)
 		break;
 		case "SUM":
-			node.value = 0
-			node.children.forEach(SUM, node)
-			if(node.aux_children){
-				node.aux_children.forEach(SUM, node)
-			}
-		break;
-		case "AVG":
+        case "AVG":
 			node.value = 0
 			node.children.forEach(SUM, node)
 			var num = node.children.length
@@ -341,8 +428,10 @@ function updateTrust(node, name, update){
 				node.aux_children.forEach(SUM, node)
 				num += node.aux_children.length
 			}
-			node.value = node.value/num
-			break;
+            //Normalization max at 1
+            if (node.op == "AVG") node.value = node.value/num
+            if(node.value > 1) node.value = 1
+		break;
 		default:
 			DEFAULTOP(node)
 		break;
@@ -357,24 +446,18 @@ function updateTrust(node, name, update){
 
 function SUM(child, index, array){
 	//Ponderate with trust in actors if child is leaf
-		console.log("SUM")
 	if(child.isLeaf) this.value += applyTrust(child.value, this.trustW);
 	else this.value += child.value
-	this.nominal += child.value
 }
 function MIN(child, index, array){
 	if(this.value == -1) {
-		console.log("MIN")
 		//Ponderate with trust in actors if child is leaf
 		if(child.isLeaf) this.value = applyTrust(child.value, this.trustW);
 		else this.value = child.value
-		this.nominal = child.value
 	} else if (this.value > child.value){
 		//Ponderate with trust in actors if child is leaf
-		console.log("MIN")
 		if(child.isLeaf) this.value = applyTrust(child.value, this.trustW);
 		else this.value = child.value
-		this.nominal = child.value
 	}
 }
 
@@ -394,11 +477,9 @@ function DEFAULTOP(node){
 	} else {
 		alert("Error: no operator set for node "+node.name+"\n "+ node)
 	}
-		console.log("DEFAULT")
 	//Ponderate with trust in actors if child is leaf
 	if(child.isLeaf) node.value = applyTrust(child.value, node.trustW);
 	else node.value = child.value
-	node.nominal = child.value
 }
 
 function auxLink(){
@@ -454,6 +535,30 @@ function applyTrust(value, trustW){
   //Switch trust in base 2 and add it to value
   var v = value + Math.log2(trustW)
   return (v >= 0 ? v : 0)
+}
+
+function initNodeValue(d) {
+  d.bits = d.value
+  var min = minEntropy[d.type]
+  if (d.value >= min) d.value = 1
+  else d.value = d.value/min
+}
+
+function normNodeValue(d, update) {
+  var min = minEntropy[d.type]
+  d.bits = update
+  if (update >= min) d.value = 1
+  else d.value = update/min
+}
+
+function setNodeColor(d) {
+  if(d.op !== undefined)
+    return d3.rgb(175,175,175)
+  else{
+    var xr = d.value < 0.5 ? 1 : 2-d.value/0.5
+    var xg = d.value < 0.5 ? (d.value-0.5)/0.5 : 1
+    return d3.rgb(35+202*xr, 35+202*xg, 35)
+  }
 }
 
 function reloadTrustModel(jsonModel, newWidth, newHeight){
