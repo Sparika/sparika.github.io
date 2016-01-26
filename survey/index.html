@@ -150,14 +150,14 @@
   
 <!-- load the d3.js library -->	
 <script src="http://d3js.org/d3.v3.min.js"></script>
-
+<script src="http://sparika.github.io/survey/public/javascripts/trustViz.js"></script>
 <script>
 var host = 'http://sparika.github.io/survey/'
 var currentPage = 0, maxPage
 
 var config = [{
   model:{
-    url:"",
+    url:"nullViz.json",
     width:"0",
     height:"0",
 	title:"<h2>Objective of this survey</h2>",
@@ -234,9 +234,6 @@ function loadNextPage() {
   
 function readModelFile(url, width, height) {
   //Null model
-  if (height == 0) {
-	clearModel()
-  } else {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 	  if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -246,8 +243,6 @@ function readModelFile(url, width, height) {
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
-  }
-
 }
 
 //document.getElementById('file-input')
@@ -255,8 +250,6 @@ function readModelFile(url, width, height) {
   	
 loadPage(0);
 </script>
-
-<script src="http://sparika.github.io/survey/public/javascripts/trustViz.js"></script>
 
   </body>
 </html>

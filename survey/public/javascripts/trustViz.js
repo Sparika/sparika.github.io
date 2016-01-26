@@ -73,21 +73,24 @@ d3.select("#setEntropy").on("input", function() {
  
 
 // SVG and TREE and SIZE
-var svg, tree = d3.layout.tree()
-function initSVG(newWidth, newHeight) {
-  newHeight = newHeight - margin.top - margin.bottom
-  height = newHeight > 0 ? newHeight : 0
-
-  
-  tree =tree.size([width, height]);
-  
-  svg = d3.select("#viz-div").append("svg")
-      .style("width", "100%")// width + margin.right + margin.left)
-      .style("height", height + margin.top + margin.bottom + "px")
-      .append("g")
+var svgFixed = d3.select("#viz-div").append("svg"),
+    tree = d3.layout.tree()
+var svg = svgFixed.append("g")
       .style("z-index", 0)
-      
-  svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+function resize(newWidth, newHeight) {
+  height = newHeight - margin.top - margin.bottom
+  
+  if (height > 0) {
+  tree =tree.size([width, height]);
+  svgFixed.style("width", "100%")// width + margin.right + margin.left)
+      .style("height", height + margin.top + margin.bottom + "px")
+  } else {
+    // Else skip showing SVG
+    svgFixed.style("height", "0px")
+  }
+  
 }
 
 function update(source) {
@@ -454,9 +457,8 @@ function applyTrust(value, trustW){
 }
 
 function reloadTrustModel(jsonModel, newWidth, newHeight){
-  clearModel()
-  initSVG(newWidth, newHeight)
-    //svg.selectAll("g > *").remove();
+    resize(newWidth, newHeight)
+    svg.selectAll("g > *").remove();
     model = jsonModel
     root = model.model
     trust = model.trust
