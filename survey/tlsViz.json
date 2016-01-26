@@ -6,43 +6,51 @@
     
     
     "model":{
-        "name": "TLS",
-        "op": "AVG",
+        "name": "secAB",
+        "altname": "sec_tls",
+        "X": "A",
+        "Y": "B",
         "children": [
-            {"name": "confAB",
-            "altname": "conf",
-            "X": "A",
-            "Y": "B",
+            {"name": "TLS",
+            "op": "AVG",
             "children": [
-                {"name": "AES",
-                "altname": "AES",
-                "op": "MIN",
+                {"name": "confAB",
+                "altname": "conf",
+                "X": "A",
+                "Y": "B",
                 "children": [
-                    {"name": "aes_key","value": 256},
-                    {"name": "CIAAuth",
-                    "altname": "CIAAuth",
-                    "X": "A",
-                    "Y": "B",
+                    {"name": "AES",
+                    "altname": "AES",
+                    "op": "MIN",
                     "children": [
-                        {"name": "RSA",
-                        "altname": "RSA",
+                        {"name": "aes_key","value": 256, "type":"symmetric"},
+                        {"name": "CIAAuth",
+                        "altname": "c/i/a/auth",
+                        "X": "A",
+                        "Y": "B",
                         "children": [
-                            {"name": "rsa_key","value": 2048}
+                            {"name": "RSA",
+                            "op": "null",
+                            "altname": "RSA",
+                            "children": [
+                                {"name": "rsa_key","value": 2048, "type":"modulus"}
+                            ]}
                         ]}
                     ]}
+                ]},
+                {"name": "intAB",
+                "altname": "int",
+                "X": "A",
+                "Y": "B",
+                "children": [
+                    {"name": "SHA256",
+                    "op": "null",
+                    "altname": "SHA256",
+                    "children": [
+                        {"name": "sha_key","value": 256, "type":"hash"}
+                    ]}
                 ]}
-            ]},
-            {"name": "intAB",
-        	"altname": "int",
-        	"X": "A",
-        	"Y": "B",
-        	"children": [
-				{"name": "SHA256",
-				"altname": "SHA256",
-				"children": [
-					{"name": "sha_key","value": 256}
-				]}
-        	]}
+            ]}
         ]
     }
 }
