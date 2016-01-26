@@ -446,7 +446,15 @@ function applyTrust(value, trustW){
   return (v >= 0 ? v : 0)
 }
 
-function reloadTrustModel(jsonModel){
+function reloadTrustModel(jsonModel, newWidth, newHeight){
+  //update size
+  tree = tree.size([newWidth, newHeight]);
+  width = newWidth - margin.left - margin.right
+  //svg.attr("width", "100%")// width + margin.right + margin.left)
+  height = newHeight - margin.top - margin.bottom
+  svg.attr("height", height + margin.top + margin.bottom)
+  console.log("update height with "+newHeight)
+  
     svg.selectAll("g > *").remove();
     model = jsonModel
     root = model.model

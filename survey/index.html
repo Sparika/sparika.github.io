@@ -157,7 +157,7 @@ var currentPage = 0, maxPage
 
 var config = [{
   model:{
-    url:"",
+    url:"nullViz.json",
     width:"0",
     height:"0",
 	title:"<h2>Objective of this survey</h2>",
@@ -167,7 +167,7 @@ var config = [{
   form:{
     url:"https://docs.google.com/forms/d/1Q89_wxlnrZdw2NIYQBeXXblbBI-4J8Buo0DY-u27MHk/viewform?embedded=true",
     width:"800",
-    height:"800"
+    height:"1200"
   }},
 {
   model:{
@@ -218,8 +218,10 @@ function loadPage(pageNumber){
   document.getElementById("title-span").innerHTML = model.title;
   document.getElementById("descr-span").innerHTML = model.descr;
   
+  
+  // Set model height
   // Read and Load Model 
-  readModelFile(host+model.url)
+  readModelFile(host+model.url, model.width, model.height)
   
   // Set Form
   document.getElementById("form-iframe").setAttribute("src", form.url)
