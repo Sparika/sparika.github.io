@@ -160,21 +160,21 @@ var config = [{
     url:"nullViz.json",
     width:"0",
     height:"0",
-	title:"<h2>Objective of this survey</h2>",
-	descr:"The Goal of this survey is to ... </p> Then we introduce some initial concepts and background (short)"
+	title:"",
+	descr:""
   },
   
   form:{
     url:"https://docs.google.com/forms/d/1Q89_wxlnrZdw2NIYQBeXXblbBI-4J8Buo0DY-u27MHk/viewform?embedded=true",
     width:"800",
-    height:"1200"
+    height:"1100"
   }},
 {
   model:{
     url:"tlsViz.json",
     width:"800",
-    height:"600",
-	title:"<h2>First Model</h2>",
+    height:"700",
+	title:"<h2>Model 1: TLS Decomposition</h2>",
 	descr:"<b>Dolorem</b> Ipsum patatipatata </p>"
   },
   
@@ -188,7 +188,7 @@ var config = [{
     url:"oidcViz.json",
     width:"800",
     height:"450",
-	title:"<h2>Second Model</h2>",
+	title:"<h2>Model 2: </h2>",
 	descr:"<b>Dolorem</b> Ipsum patatipatata etc etc etc etc </p>"
   },
   
@@ -228,6 +228,7 @@ function loadPage(pageNumber){
   document.getElementById("form-iframe").setAttribute("width", form.width)
   document.getElementById("form-iframe").setAttribute("height", form.height)
 }
+
 function loadNextPage() {
   loadPage(currentPage+1)
 }
