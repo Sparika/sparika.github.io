@@ -61,6 +61,7 @@
 	}
 	
 	div.viz {
+	position: relative; 
     float: none; /* not needed, just for clarification */
     /*background: #000000;*/
     /* the next props are meant to keep this block independent from the other floated one */
@@ -89,7 +90,7 @@
   	}
 	
 	div.tooltip {   
-	  position: relative;           
+	  position: absolute;           
 	  text-align: center;           
 	  width: 60px;                  
 	  height: 16px;                 
@@ -103,9 +104,9 @@
 	}
 	
 	div.setData {   
-	  position: relative;
+	  position: absolute;
       text-align: left;
-	  width: 160px; 
+	  width: 60px; 
 	  height: 16px;                 
 	  padding: 4px;             
 	  font: 12px sans-serif;        
@@ -113,6 +114,17 @@
 	  border: 0px;      
 	  border-radius: 8px;     
 	  z-index: 100;      
+	}
+	
+	div.setTrust {   
+	  position: absolute;
+      text-align: left;
+	  width: 160px;                 
+	  padding: 4px;             
+	  font: 12px sans-serif;        
+	  background: lightsteelblue;   
+	  border: 0px;      
+	  border-radius: 8px;  
 	}
 	
     </style>
