@@ -1,0 +1,80 @@
+<!--<div class="jumbotron">
+  <h1>'Allo, 'Allo!</h1>
+  <p class="lead">
+    <img src="images/yeoman.8cb970fb.png" alt="I'm Yeoman"><br>
+    Always a pleasure scaffolding your apps.
+  </p>
+  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>-->
+
+
+<div class="page" ng-if="page == '0'">
+  <p>With the advent of technology such as WebRTC, real-time communications are moving to the open Internet. This
+    disruptive change will leads to the emergence of several new, unknown and even invisible actors participating in the
+    establishment of a call session. For an end-user, trust in the system becomes blurred and difficult to
+    understand.</p>
+
+  <p>We propose a method for modeling and computing the trust that an end-user (or a policy authority) could have in a
+    given online communication setup. To this end, we build a user-centric functional decomposition of security
+    properties
+    and protocols from a communication setup. We use information-theory entropy as a base trust metric and compute
+    a global trust value with aggregation operators. This end-value is then returned to the user. </p>
+
+  <p>This survey will be used to evaluate the interest, usefulness, and clarity of our model as a security knowledge
+    representation. </p>
+
+  <p>The first half of the survey is dedicated to your understanding and point-of-view on security issues on the web
+    and more precisely related to real time communications. The second half of the survey presents our framework, let
+    you play with it on concrete examples, before asking questions regarding your perception the way information
+    is represented. </p>
+
+  <p>The survey should not take more than ... minutes to complete.</p>
+
+  <p>Thank you for taking some time helping us!</p>
+</div>
+
+
+<div class="page" ng-if="page == '1'">
+  <p><img src='https://lh3.googleusercontent.com/T35UbRY1C47abRu2CJgv5DXIr9iphMJ8XFcBr5hkX3Zwx0fCJAQCWMyG6_7G_12Jp-xJZw'
+  width="80%"></p>
+
+
+  <p></p>
+</div>
+
+
+<div class="page" ng-if="page == '4'">
+  Model
+</div>
+
+<div class="viz" id="viz-div"></div>
+
+<div class="page" ng-if="page == 'thanks'">
+  Thanks
+</div>
+
+<div ng-controller="FormController" ng-if="page != 'thanks'">
+  <form name="myForm"
+        sf-schema="schema"
+        sf-form="form"
+        sf-model="model"
+        ng-submit="onSubmit()"></form>
+
+
+  {{variable}}
+</div>
+
+<!--<div class="row marketing">
+  <h4>HTML5 Boilerplate</h4>
+  <p>
+    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
+  </p>
+
+  <h4>Angular</h4>
+  <p>
+    AngularJS is a toolset for building the framework most suited to your application development.
+  </p>
+
+  <h4>Karma</h4>
+  <p>Spectacular Test Runner for JavaScript.</p>
+</div>-->
