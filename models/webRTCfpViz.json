@@ -1,0 +1,128 @@
+{
+    "trust":{
+        "A":1,
+        "B":1,
+        "IdP":1,
+        "CSP":1
+    },
+    
+    
+    "model":{
+        "name": "authAB",
+        "altname": "auth",
+        "X":"A",
+        "Y":"B",
+        "children": [
+            {"name": "fingerprint",
+            "altname": "Fingerprint/Id binding",
+            "op": "MIN",
+            "children": [
+                {"name": "Authentication",
+                "op": "MIN",
+                "children": [
+                    {"name": "Auth factor", "value":20, "type":"pwd"},
+                    {"name": "CIA",
+                        "altname": "c/i/a",
+                        "X": "IdP",
+                        "Y": "B",
+                        "children": [
+                            {"name": "TLS",
+                            "op": "null",
+                            "altname": "TLS",
+                            "children": [
+                                {"name": "tls_keyIDP","altname":"idp_key","value": 2048, "type":"modulus"}
+                            ]}
+                    ]}
+                ]},
+                {"name": "ID Authenticity",
+                "op": "SUM",
+                "children": [
+                    {"name": "CIA",
+                        "altname": "c/i/a",
+                        "X": "IdP",
+                        "Y": "A",
+                        "children": [
+                            {"name": "TLS",
+                            "op": "null",
+                            "altname": "TLS",
+                            "children": [
+                                {"name": "tls_keyIDP","altname":"idp_key","value": 2048, "type":"modulus"}
+                            ]}
+                    ]},
+                    {"name": "intBA",
+                    "altname": "int",
+                    "X": "B",
+                    "Y": "A",
+                    "children": [
+                        {"name": "Signal",
+                        "op": "MIN",
+                        "children": [
+                            {"name": "intBCSP",
+                                "altname": "int",
+                                "X": "B",
+                                "Y": "CSP",
+                                "children": [
+                                    {"name": "TLS",
+                                    "op": "null",
+                                    "altname": "TLS",
+                                    "children": [
+                                        {"name": "tls_keyCSP","altname":"csp_key","value": 2048, "type":"modulus"}
+                                    ]}
+                            ]},
+                            {"name": "intCSPA",
+                                "altname": "int",
+                                "X": "CSP",
+                                "Y": "A",
+                                "children": [
+                                    {"name": "TLS",
+                                    "op": "null",
+                                    "altname": "TLS",
+                                    "children": [
+                                        {"name": "tls_keyCSP","altname":"csp_key","value": 2048, "type":"modulus"}
+                                    ]}
+                            ]}
+                        ]}
+                    ]}  
+                ]},
+                {"name": "FP Authenticity",
+                "op": "SUM",
+                "children": [
+                    {"name": "key_fingerprint","value": 256, "type":"hash"},
+                    {"name": "intBA",
+                    "altname": "int",
+                    "X": "B",
+                    "Y": "A",
+                    "children": [
+                        {"name": "Signal",
+                        "op": "MIN",
+                        "children": [
+                            {"name": "intBCSP",
+                                "altname": "int",
+                                "X": "B",
+                                "Y": "CSP",
+                                "children": [
+                                    {"name": "TLS",
+                                    "op": "null",
+                                    "altname": "TLS",
+                                    "children": [
+                                        {"name": "tls_keyCSP","altname":"csp_key","value": 2048, "type":"modulus"}
+                                    ]}
+                            ]},
+                            {"name": "intCSPA",
+                                "altname": "int",
+                                "X": "CSP",
+                                "Y": "A",
+                                "children": [
+                                    {"name": "TLS",
+                                    "op": "null",
+                                    "altname": "TLS",
+                                    "children": [
+                                        {"name": "tls_keyCSP","altname":"csp_key","value": 2048, "type":"modulus"}
+                                    ]}
+                            ]}
+                        ]}
+                    ]}
+                ]}
+            ]}
+        ]}
+}
