@@ -33,7 +33,7 @@ angular
                 controller  : 'MainCtrl',
                 activeTab: 'survey'
             })
-            .when('/', {redirectTo: function() {window.location = '/0'}})
+            //.when('/', {redirectTo: function() {window.location = '/0'}})
             //.otherwise({ redirectTo: function() {window.location = '/0'} });
 
 
