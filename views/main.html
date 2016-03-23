@@ -34,7 +34,7 @@
 </div>
 
 
-<div class="page" ng-if="page == '1'">
+<div class="page" ng-if="page == '2'">
   <p><img src='https://lh3.googleusercontent.com/T35UbRY1C47abRu2CJgv5DXIr9iphMJ8XFcBr5hkX3Zwx0fCJAQCWMyG6_7G_12Jp-xJZw'
   width="80%"></p>
 
@@ -43,17 +43,77 @@
 </div>
 
 
-<div class="page" ng-if="page == '4'">
+<div class="page" ng-if="page == '5'">
   Model
 </div>
 
-<div class="viz" id="viz-div"></div>
+  <div ng-if="page == '6'" class="col-md-4">
+    <form name="modelControl" ng-controller="ModelFormController">
+      <label>
+        <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha256" ng-change="onTLSModelChange()">
+        TLS with RSA2048-AES256-SHA256
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{rsa2048aes256sha256}}</li>
+        <li>Our model computes it as trust 1</li>
+      </ul>
+      <label>
+        <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha1" ng-change="onTLSModelChange()">
+        TLS with RSA2048-AES256-SHA1
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{rsa2048aes256sha1}}</li>
+        <li>Our model computes it as trust 0</li>
+      </ul>
+      <label>
+        <input type="radio" ng-model="tlschoice.name" value="rsa1024aes256sha256" ng-change="onTLSModelChange()">
+        TLS with RSA1024-AES256-SHA256
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{rsa1024aes256sha256}}</li>
+        <li>Our model computes it as trust 0</li>
+      </ul>
+    </form>
+  </div>
+
+
+
+  <div ng-if="page == '7'" class="col-md-4">
+    <form name="modelControl" ng-controller="ModelFormController">
+      <label>
+        <input type="radio" ng-model="trustChoice.name" value="all" ng-change="onTrustModelChange()">
+        A WebRTC conversation
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{webRTC}}</li>
+        <li>Our model computes it as trust 0</li>
+      </ul>
+      <label>
+        <input type="radio" ng-model="trustChoice.name" value="nocsp" ng-change="onTrustModelChange()">
+        A WebRTC conversation with an untrusted CSP
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{webRTCwtID}}</li>
+        <li>Our model computes it as trust 1</li>
+      </ul>
+      <label>
+        <input type="radio" ng-model="trustChoice.name" value="noidp" ng-change="onTrustModelChange()">
+        A WebRTC conversation with an untrusted IdP
+      </label>
+      <ul>
+        <li>You estimated this configuration at trust {{webRTCwutID}}</li>
+        <li>Our model computes it as trust 0</li>
+      </ul>
+    </form>
+  </div>
+
+  <div class="viz col-md-8" id="viz-div"></div>
 
 <div class="page" ng-if="page == 'thanks'">
   Thanks
 </div>
 
-<div ng-controller="FormController" ng-if="page != 'thanks'">
+<div ng-controller="FormController" class="col-md-12" ng-if="page != 'thanks'">
   <form name="myForm"
         sf-schema="schema"
         sf-form="form"
