@@ -33,8 +33,7 @@ angular
                 controller  : 'MainCtrl',
                 activeTab: 'survey'
             })
-            //.when('/', {redirectTo: function() {window.location = '/0'}})
-            //.otherwise({ redirectTo: function() {window.location = '/0'} });
+            .otherwise({ redirectTo: function() {window.location = '/0'} });
 
 
         $locationProvider.html5Mode(true)
@@ -191,12 +190,12 @@ angular.module('trustModelFormApp')
   $scope.formContent = [
   [], // Introduction
   [{type: 'fieldset', // Personal Informations
-         title: 'Personal level of expertise'
+         title: 'Personal level of expertise',
+         items: [{type: 'help',
+                          helpvalue: '<p>In order to qualify your answers to this survey, we would like to know '+
+                          'your field of work as well as your degree of knowledge and experience in the fields '+
+                          'of web technologies and computer security.'}]
     },
-    {key: 'webExpertise',
-    type: 'radios-inline'},
-    {key: 'securityExpertise',
-    type: 'radios-inline'},
     {"type": "section",
         "htmlClass": "row",
         "items": [
@@ -204,6 +203,8 @@ angular.module('trustModelFormApp')
             "type": "section",
             "htmlClass": "col-xs-6",
             "items": [
+              {key: 'webExpertise',
+               type: 'radios-inline'},
               {key: 'field',
                 "style": {
                   "selected": "btn-success",
@@ -217,28 +218,37 @@ angular.module('trustModelFormApp')
             "type": "section",
             "htmlClass": "col-xs-6",
             "items": [
+              {key: 'securityExpertise',
+              type: 'radios-inline'},
               "company"
             ]
           }
         ]
-    }
-  ],
-  [{type: 'fieldset',
-      title: 'Scenario 1 - Certification chain'
     },
+
+  ],
+  [
+    {type: 'fieldset', // Personal Informations
+          items: [{type: 'help',
+                  helpvalue: '<br><p>The above figure represents a certificate chain containing a weak certificate using '+
+                             'SHA-1. In this situation, which type of warning would you expect your browser to display?'}]
+        },
     {key: 'lockColor',
      type: 'radios-inline'},
+    {type: 'fieldset', // Personal Informations
+      items: [{type: 'help',
+              helpvalue: '<br><p>Regarding SHA algorithms, how would you evaluate their respective security on a scale of 0-10?'}]
+    },
     {key: 'sha1',
      type: 'radios-inline'},
     {key: 'sha256',
      type: 'radios-inline'}
   ],
-  [{type: 'help',
-    helpvalue: ''},
-    {type: 'fieldset',
-      title: 'Scenario 2 - TLS Parameters',
-      items: []
-    },
+  [{type: 'fieldset', // Personal Informations
+         items: [{type: 'help',
+                 helpvalue: '<br><p>How would you evaluate the security of the following algorithms, used in the TLS protocol '+
+                            'suite, on a scale of 0-10?'}]
+       },
     {key: 'aes128',
      type: 'radios-inline'},
     {key: 'aes256',
@@ -247,6 +257,10 @@ angular.module('trustModelFormApp')
      type: 'radios-inline'},
     {key: 'rsa2048',
      type: 'radios-inline'},
+     {type: 'fieldset', // Personal Informations
+              items: [{type: 'help',
+                      helpvalue: '<br><p>How would you evaluate the security of the following TLS configurations, on a scale of 0-10?'}]
+            },
     {key: 'rsa2048aes256sha256',
      type: 'radios-inline'},
     {key: 'rsa2048aes256sha1',
@@ -255,13 +269,9 @@ angular.module('trustModelFormApp')
      type: 'radios-inline'}
   ],
   [{type: 'fieldset',
-        title: 'Scenario 3 - WebRTC Communication Setup',
         items: [{type: 'help',
-                 helpvalue: '<p>Here we want to test the influence of trust in actors on the overall security level.'+
-                            '<p>Assuming an up-to-date configuration of the security parameters. Evaluate the trust you would have'+
-                            'in a communication given some trusts in actors involved in the communication setup.'+
-                            '<p>Note: From its specifications, WebRTC assumes no trust in the communication provider as long as'+
-                            'a user is authenticated with an Identity Provider.'}]
+                 helpvalue: '<p>How would you evaluate the security of the following communication scenarios, assuming '+
+                 'up-to-date configurations of the security parameters?'}]
       },
       {key: 'mobile',
        type: 'radios-inline'},
@@ -275,12 +285,8 @@ angular.module('trustModelFormApp')
        type: 'radios-inline'}
   ],
   [],// Model description
-  [{type: 'fieldset',
-              title: 'Model 1 - TLS Decomposition'
-      }], // Model example 1
-  [{type: 'fieldset',
-              title: 'Model 2 - WebRTC Communication Setup'
-  }] // Model example 2
+  [], // Model example 1
+  [] // Model example 2
   ]
 
   $scope.nextAction = {type: 'button', style: 'btn-info', title: 'Next', onClick: 'next()'}

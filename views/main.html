@@ -23,10 +23,11 @@
   <p>This survey will be used to evaluate the interest, usefulness, and clarity of our model as a security knowledge
     representation. </p>
 
-  <p>The first half of the survey is dedicated to your understanding and point-of-view on security issues on the web
+  <p>The first half of the survey is dedicated to your current understanding and point-of-view on security issues on the web
     and more precisely related to real time communications. The second half of the survey presents our framework, let
-    you play with it on concrete examples, before asking questions regarding your perception the way information
-    is represented. </p>
+    you play with it on concrete examples, before a series of questions regarding your perception of the way our model
+    represents information.
+  </p>
 
   <p>The survey should not take more than ... minutes to complete.</p>
 
@@ -35,20 +36,60 @@
 
 
 <div class="page" ng-if="page == '2'">
+  <legend>Scenario 1 - Weak certificate chain</legend>
+
+  <p>A certificate chain is an ordered hierarchy of digital certificates. In the chain, each certificates is signed by
+    a higher level certificate. The top-level certificate is provided by a root certificate authority. This mechanism
+    of trust propagation, allows an individuals to verify the validity of a certificate without direct trust in the
+    certificate's issuer.</p>
+
+  <p>In practice, root certificates are pre-loaded by browser vendors. When verifying a certificate provided by a web-server,
+  a web-browser must verify the validity of the whole certificate chain.</p>
+
+  <p>The Secure Hash Algorithm (SHA) family is often used to sign certificates. SHA-1 is now deemed unsecure and is
+  gradually withdrawn from use by Certificate Authority as well as browser vendors.</p>
+
   <p><img src='https://lh3.googleusercontent.com/T35UbRY1C47abRu2CJgv5DXIr9iphMJ8XFcBr5hkX3Zwx0fCJAQCWMyG6_7G_12Jp-xJZw'
-  width="80%"></p>
-
-
-  <p></p>
+          width="60%" style='display:block; margin: 0 auto;'></p>
+  <br>
 </div>
 
+<div class="page" ng-if="page == '3'">
+  <legend>Scenario 2 - Transport Layer Security</legend>
+
+  <p>Transport Layer Security (TLS) is a cryptographic protocols used to ensure communications security over various
+  applications.</p>
+
+  <p>Communications security includes properties of privacy, authentication and integrity.
+    In TLS privacy is provided by symmetric cryptography (e.g. with AES), authentication by public
+    key cryptography (e.g. with RSA), and data integrity with Message Authentication Code (for instance with HMAC-SHA-1).</p>
+</div>
+
+<div class="page" ng-if="page == '4'">
+  <legend>Scenario 3 - Audio-Video communications</legend>
+
+  <p>WebRTC is a draft API developped by the W3C for browser-to-browser communications. It allows for usages such as
+    voice call, video call, and file sharing. As an API provided by web-browser it doesn't require third-party plugins
+    and could be deployed by any web server.</p>
+
+  <p>WebRTC establishes a communication between two web-browsers in a peer-to-peer fashion but still requires signalling
+    messages to be exchanged by participant through one or more Communication Service Providers (CSP). However, the
+    draft does not require the user to trust the CSP in order to establish a secure communication.</p>
+
+  <p>The draft also specifies a way for call-participants to exchange identity assertion provided by a third-party
+  Identity Provider. i.e. authenticate to the other user through an IdP independant from the CSP.</p>
+
+  <p>We would like to compare the trust you may have in current real-time communication scenario with the trust you
+  would have in different WebRTC scenarios.</p>
+</div>
 
 <div class="page" ng-if="page == '5'">
   Model
 </div>
 
-  <div ng-if="page == '6'" class="col-md-4">
-    <form name="modelControl" ng-controller="ModelFormController">
+  <div ng-if="page == '6'">
+    <legend>Model 1 - Transport Layer Security decomposition</legend>
+    <form class="col-md-4" name="modelControl" ng-controller="ModelFormController">
       <label>
         <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha256" ng-change="onTLSModelChange()">
         TLS with RSA2048-AES256-SHA256
@@ -78,8 +119,9 @@
 
 
 
-  <div ng-if="page == '7'" class="col-md-4">
-    <form name="modelControl" ng-controller="ModelFormController">
+  <div ng-if="page == '7'" >
+    <legend>Model 2 - WebRTC Communication Setup decomposition</legend>
+    <form class="col-md-4" name="modelControl" ng-controller="ModelFormController">
       <label>
         <input type="radio" ng-model="trustChoice.name" value="all" ng-change="onTrustModelChange()">
         A WebRTC conversation
