@@ -138,52 +138,92 @@ angular.module('trustModelFormApp')
   $scope.schema = {
     type: 'object',
     properties: {
-      lockColor: {type: 'string', enum:['green (valid)', 'yellow (warning)', 'red (error)'], title: 'Expected browser lock color',
+      lockColor: {type: 'string', enum:['green (valid)', 'yellow (warning)', 'red (error)'],
+                  title: 'In this situation, which type of warning would you expect your browser to display?',
                   description: '<img src="https://lh5.googleusercontent.com/fb2iovaPq1TailtGP5kv3v-aguTzKHazIo33j-N-_'+
                                 'oiCsPiivQCFM6PxxsmFzI2cu4zB0Q" width="127px">'},
       sha1: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'Sha-1 Security level',
-                  description:'SHA-1 hashing algorithm producing a 160bits hash.'},
+                  description:'SHA-1 hashing algorithm producing a 160bits hash, used for hashing (collision resistance).'},
       sha256: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'Sha-256 Security level',
-                  description:'SHA-256 hashing algorithm producing a 256bits hash.'},
+                  description:'SHA-256 hashing algorithm producing a 256bits hash, used for hashing (collision resistance).'},
+      sha512: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'Sha-512 Security level',
+                  description:'SHA-512 hashing algorithm producing a 512bits hash, used for hashing (collision resistance).'},
       aes128: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'AES 128 Security level',
-                  description:'AES encryption algorithm with a 128bits key.'},
+                  description:'AES encryption algorithm with a 128bits key, used for encryption (confidentiality resistance).'},
       aes256: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'AES 256 Security level',
-                  description:'AES encryption algorithm with a 256bits key.'},
+                  description:'AES encryption algorithm with a 256bits key, used for encryption (confidentiality resistance).'},
       rsa1024: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'RSA 1024 Security level',
-                  description:'RSA in encryption or signature mode with a 1024bits key.'},
+                  description:'RSA with a 1024bits key, used for signature (authentication strength).'},
       rsa2048: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'RSA 2048 Security level',
-                  description:'RSA in encryption or signature mode with a 2048bits key.'},
-      rsa2048aes256sha1: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS Security level',
-                  description:'TLS configured with RSA2048-AES256-SHA-1'},
-      rsa2048aes256sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS Security level',
-                  description:'TLS configured with RSA2048-AES256-SHA-256'},
-      rsa1024aes256sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS Security level',
-                  description:'TLS configured with RSA1024-AES256-SHA-256'},
+                  description:'RSA with a 2048bits key, used for signature (authentication strength).'},
+      rsa2048aes128sha1: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(2048)_AES_128_SHA',
+                  description:'TLS configured with RSA 2048, AES 128 and SHA-1'},
+      rsa2048aes256sha1: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(2048)_AES_256_SHA',
+                  description:'TLS configured with RSA 2048, AES 256 and SHA-1'},
+      rsa2048aes128sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(2048)_AES_128_SHA256',
+                  description:'TLS configured with RSA 2048, AES 128 and SHA-256'},
+      rsa2048aes256sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(2048)_AES_256_SHA256',
+                  description:'TLS configured with RSA 2048, AES 256 and SHA-256'},
+      rsa1024aes128sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(1024)_AES_128_SHA256',
+                  description:'TLS configured with RSA 1024, AES 128 and SHA-256'},
+      rsa1024aes256sha256: {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'TLS with RSA(1024)_AES_256_SHA256',
+                  description:'TLS configured with RSA 1024, AES 256 and SHA-256'},
       mobile:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-                title: 'A phone conversation with trusted operators? ',
-                description:'Calling someone from you mobile-phone.'},
+                      title: 'You use your personal mobile phone for a national call.',
+                      description:'Each operators handling the call would thus be operating in your country.'},
+      internationalmobile:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
+                      title: 'You use your personal mobile phone for an international call. ',
+                      description:'Operators handling the call would this be unknown to you.'},
       ott:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-             title: 'A web conversation on a well-known OTT service? ',
-             description:'For instance on Google Hangouts or Facebook Messenger.'},
+             title: 'You use a well known OTT service for a communication.',
+             description:'For instance on services such as Hangouts, Messenger, or Whatsapp.'},
       webRTC:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-                title: 'A WebRTC conversation on an untrusted OTT service? ',
-                description:'For instance a gaming web-page, with authentication through the gaming page.'},
+                title: 'You use a WebRTC service integrated into a web-page.',
+                description:'For instance a gaming web-page, with integrated WebRTC service and authentication through the gaming page only, '+
+                'i.e. the website is responsible for authenticating users.'},
       webRTCwtID:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-                   title: 'A WebRTC conversation on an untrusted OTT service but with an identity'+
-                   ' assertion from a trusted Identity Provider? ',
-                   description:'You get an assertion from an IdP you trust or that you use yourself, that the other user is authenticated.'},
+                   title: 'You use a WebRTC service integrated into a web-page, but delegating authentication to a third party.',
+                   description:'Similar to the previous use-case, however you get an identity assertion, asserting that '+
+                   'the other participant was authenticated through an Identity Provider you trust.'},
       webRTCwutID:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-                   title: 'A WebRTC conversation on a trusted OTT service with an identity'+
-                   ' assertion from an untrusted Identity Provider? ',
-                   description:'For instance, an IdP with a domain you never heard of before.'},
+                   title: 'You use a WebRTC service integrated into a web-page, but delegating authentication to an untrusted third party.',
+                   description:'Similar to the previous use-case, however the Identity Provider asserting the identity is '+
+                   'unknown to you.'},
 
-      webExpertise: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'Web technologies expertise',
-                                      description:'How would you qualify your expertise with Web technologies?'},
-      securityExpertise: {type:'string', enum:['0','1','2','3','4','5','6','7','8','9','10'], title: 'Computer security expertise',
-                                      description:'How would you qualify your expertise with computer security?'},
+      webExpertise: {type:'string', //description:'How would you qualify your expertise with Web technologies?',
+                                      enum:['End-User','Intermediate','Expert'],
+                                      title: 'Qualify your degree of expertise with Web technologies'},
+      securityExpertise: {type:'string', //description:'How would you qualify your expertise with computer security?',
+                                      enum:['End-User','Intermediate','Expert'],
+                                      title: 'Qualify your degree of expertise with Computer security'},
       field: {type:'string', enum:['Academic', 'Industrial'], title: 'Field of work'},
       company: {type:'string', title: 'Company (optional)'}
-    }
+    },
+
+    'required': [
+        'field',//'company',
+        'webExpertise','securityExpertise',
+        'lockColor',
+        'sha1',
+        'sha256',
+        'sha512',
+        'aes128',
+        'aes256',
+        'rsa1024',
+        'rsa2048',
+        'rsa2048aes128sha1',
+        'rsa2048aes256sha1',
+        'rsa2048aes128sha256',
+        'rsa2048aes256sha256',
+        'rsa1024aes128sha256',
+        'rsa1024aes256sha256',
+        'mobile',
+        'internationalmobile',
+        'ott',
+        'webRTC',
+        'webRTCwtID',
+        'webRTCwutID'
+      ]
 
   };
 
@@ -203,8 +243,23 @@ angular.module('trustModelFormApp')
             "type": "section",
             "htmlClass": "col-xs-6",
             "items": [
-              {key: 'webExpertise',
-               type: 'radios-inline'},
+              {"key": "webExpertise",
+                  "type": "radios",
+                  "titleMap": [
+                    {
+                      value: 'End-User',
+                      name: 'End-User <br> I only use the Web.'
+                    },
+                    {
+                      value: 'Intermediate',
+                      name: 'Intermediate <br> I have some knowledge with web technologies.'
+                    },
+                    {
+                      value: 'Expert',
+                      name: 'Expert <br> Working on Web technologies is my daily job.',
+                    }
+                  ]
+              },
               {key: 'field',
                 "style": {
                   "selected": "btn-success",
@@ -218,8 +273,22 @@ angular.module('trustModelFormApp')
             "type": "section",
             "htmlClass": "col-xs-6",
             "items": [
-              {key: 'securityExpertise',
-              type: 'radios-inline'},
+              {"key": "securityExpertise",
+                "type": "radios",
+                "titleMap": [
+                {
+                  value: "End-User",
+                  name: "End-User <br> I may use security algorithms but don't know the details."
+                },
+                {
+                  value: "Intermediate",
+                  name: "Intermediate <br> I have some knowledge on computer security."
+                },
+                {
+                  value: 'Expert',
+                  name: 'Expert <br> Computer security is my field of expertise.',
+                }]
+              },
               "company"
             ]
           }
@@ -228,61 +297,166 @@ angular.module('trustModelFormApp')
 
   ],
   [
-    {type: 'fieldset', // Personal Informations
-          items: [{type: 'help',
-                  helpvalue: '<br><p>The above figure represents a certificate chain containing a weak certificate using '+
-                             'SHA-1. In this situation, which type of warning would you expect your browser to display?'}]
-        },
     {key: 'lockColor',
      type: 'radios-inline'},
     {type: 'fieldset', // Personal Informations
       items: [{type: 'help',
-              helpvalue: '<br><p>Regarding SHA algorithms, how would you evaluate their respective security on a scale of 0-10?'}]
+              helpvalue: '<br><b>Regarding SHA algorithms, how would you evaluate their respective security on a scale of 0-10?</b>'+
+                          '<div class="help-block">On this scale 0 represents a compromised security level, '+
+                           'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
     },
-    {key: 'sha1',
-     type: 'radios-inline'},
-    {key: 'sha256',
-     type: 'radios-inline'}
+     {"type": "section",
+             "htmlClass": "row",
+             "items": [
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                {key: 'sha1',
+                type: 'radios-inline'},
+                {key: 'sha512',
+                type: 'radios-inline'}
+               ]
+             },
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                  {key: 'sha256',
+                  type: 'radios-inline'}
+               ]
+             }
+             ]
+     }
   ],
   [{type: 'fieldset', // Personal Informations
          items: [{type: 'help',
-                 helpvalue: '<br><p>How would you evaluate the security of the following algorithms, used in the TLS protocol '+
-                            'suite, on a scale of 0-10?'}]
+                 helpvalue: '<br><b>How would you evaluate the security of the following algorithms on a scale of 0-10?</b>'+
+                            '<div class="help-block">On this scale 0 represents a compromised security level, '+
+                            'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
        },
-    {key: 'aes128',
-     type: 'radios-inline'},
-    {key: 'aes256',
-     type: 'radios-inline'},
-    {key: 'rsa1024',
-     type: 'radios-inline'},
-    {key: 'rsa2048',
-     type: 'radios-inline'},
+     {"type": "section",
+             "htmlClass": "row",
+             "items": [
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {key: 'aes128',
+                 type: 'radios-inline'},
+                 {key: 'rsa1024',
+                 type: 'radios-inline'}
+               ]
+             },
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {key: 'aes256',
+                 type: 'radios-inline'},
+                 {key: 'rsa2048',
+                 type: 'radios-inline'}
+               ]
+             }
+             ]
+     },
      {type: 'fieldset', // Personal Informations
               items: [{type: 'help',
-                      helpvalue: '<br><p>How would you evaluate the security of the following TLS configurations, on a scale of 0-10?'}]
+                      helpvalue: '<br><br><b>How would you evaluate the security of the following TLS configurations, on a scale of 0-10?</b>'+
+                                  '<div class="help-block">On this scale 0 represents a compromised security level, '+
+                                  'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
             },
-    {key: 'rsa2048aes256sha256',
-     type: 'radios-inline'},
-    {key: 'rsa2048aes256sha1',
-     type: 'radios-inline'},
-    {key: 'rsa1024aes256sha256',
-     type: 'radios-inline'}
+
+     {"type": "section",
+        "htmlClass": "row",
+        "items": [
+        {
+          "type": "section",
+          "htmlClass": "col-xs-6",
+          "items": [
+            {key: 'rsa2048aes128sha1',
+            type: 'radios-inline'},
+            {key: 'rsa2048aes128sha256',
+            type: 'radios-inline'},
+            {key: 'rsa1024aes128sha256',
+            type: 'radios-inline'}
+          ]
+        },
+        {
+          "type": "section",
+          "htmlClass": "col-xs-6",
+          "items": [
+            {key: 'rsa2048aes256sha1',
+            type: 'radios-inline'},
+            {key: 'rsa2048aes256sha256',
+            type: 'radios-inline'},
+            {key: 'rsa1024aes256sha256',
+            type: 'radios-inline'}
+          ]
+        }
+        ]
+     },
   ],
-  [{type: 'fieldset',
-        items: [{type: 'help',
-                 helpvalue: '<p>How would you evaluate the security of the following communication scenarios, assuming '+
-                 'up-to-date configurations of the security parameters?'}]
+  [{type: 'fieldset', // Personal Informations
+                 items: [{type: 'help',
+                         helpvalue: '<br><br><b>How would you evaluate the security of the following communication scenarios, '+
+                                     'on a scale of 0-10?</b>'+
+                                     '<div class="help-block">On this scale 0 represents a compromised security level, '+
+                                     'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
       },
+
+           {"type": "section",
+              "htmlClass": "row",
+              "items": [
+              {
+                "type": "section",
+                "htmlClass": "col-xs-6",
+                "items": [
       {key: 'mobile',
        type: 'radios-inline'},
       {key: 'ott',
+       type: 'radios-inline'}
+                ]
+              },
+              {
+                "type": "section",
+                "htmlClass": "col-xs-6",
+                "items": [
+      {key: 'internationalmobile',
        type: 'radios-inline'},
+                ]
+              }
+              ]
+           },
+{type: 'fieldset', // Personal Informations
+                 items: [{type: 'help',
+                         helpvalue: '<br><br>'}]
+      },
+
+           {"type": "section",
+              "htmlClass": "row",
+              "items": [
+              {
+                "type": "section",
+                "htmlClass": "col-xs-6",
+                "items": [
       {key: 'webRTC',
-       type: 'radios-inline'},
-      {key: 'webRTCwtID',
        type: 'radios-inline'},
       {key: 'webRTCwutID',
        type: 'radios-inline'}
+                ]
+              },
+              {
+                "type": "section",
+                "htmlClass": "col-xs-6",
+                "items": [
+      {key: 'webRTCwtID',
+       type: 'radios-inline'},
+                ]
+              }
+              ]
+           },
+
   ],
   [],// Model description
   [], // Model example 1
@@ -348,9 +522,13 @@ angular.module('trustModelFormApp')
       // Then we check if the form is valid
       //if ($scope.form.$valid) {
         // ... do whatever you need to do with your data.
-        console.log($scope.model)
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://localhost:3000/survey", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.setRequestHeader( 'Access-Control-Allow-Origin', '*');
+      xhttp.send(JSON.stringify($scope.model));
       //}
-        $location.path('thanks')
+      $location.path('thanks')
     };
 }])
 
