@@ -92,6 +92,24 @@ angular.module('trustModelFormApp')
     });
   }])
   .controller('ModelFormController', ['$scope', 'data', function($scope, data) {
+      var modelTips = {
+        tlsModel: {
+          'rsa2048aes256sha256': "",
+          'rsa2048aes256sha1': "In this configuration, SHA-1 is weak. With an estimated entropy of 53bits for a "+
+                               "recommended value of 200bits ... (tbc)",
+          'rsa1024aes256sha256': "In this configuration, RSA is weak as it is using a 1024bits key. The recommended size"+
+                                 " for factoring modulus algorithm is 2000bits of entropy. ... (tbc)"},
+        trustModel: {
+          'all': "This is a standard WebRTC configuration. In this scenario, the IdP and CSP are the same actors and thus"+
+                 " share the same trust level. Trust on the overall system is entirely dependent on trust given to the CSP/IdP.",
+          'noidp': "In this configuration, the IdP is untrusted. Although the CSP may be trusted, the authentication by the IdP"+
+                   "may be compromised.",
+          'nocsp': "In this configuration, the CSP is untrusted. However, a trusted IdP provides an identity assertion"+
+                   " authenticating the other user. This assertion ensures that no man-in-the-middle attack is taking "+
+                   "place, as long as the IdP is trusted."}
+      }
+      $scope.modelTip = ""
+      $scope.displayModelTip = function(){return $scope.modelTip!=""}
       $scope.tlschoice = {
         name: 'rsa2048aes256sha256'
       }
@@ -106,9 +124,10 @@ angular.module('trustModelFormApp')
       $scope.webRTCwutID = data.webRTCwutID
 
       $scope.onTrustModelChange = function(){
+        $scope.modelTip = modelTips.trustModel[$scope.trustChoice.name]
         switch ($scope.trustChoice.name) {
           case 'all':
-            setActorTrust({CSP: '0', IdP: '0'}, true)
+            setActorTrust({CSP: $scope.webRTC/10||1, IdP: $scope.webRTC/10||1}, true)
             break;
           case 'noidp':
             setActorTrust({CSP: '1', IdP: '0'}, true)
@@ -120,6 +139,7 @@ angular.module('trustModelFormApp')
       }
 
       $scope.onTLSModelChange = function(){
+        $scope.modelTip = modelTips.tlsModel[$scope.tlschoice.name]
         switch ($scope.tlschoice.name) {
           case 'rsa2048aes256sha256':
               setEntropy({sha_key: '256', rsa_key: '2048'})
@@ -173,7 +193,7 @@ angular.module('trustModelFormApp')
                       description:'Each operators handling the call would thus be operating in your country.'},
       internationalmobile:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
                       title: 'You use your personal mobile phone for an international call. ',
-                      description:'Operators handling the call would this be unknown to you.'},
+                      description:'Operators handling the call would thus be unknown to you.'},
       ott:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
              title: 'You use a well known OTT service for a communication.',
              description:'For instance on services such as Hangouts, Messenger, or Whatsapp.'},
@@ -197,7 +217,27 @@ angular.module('trustModelFormApp')
                                       enum:['End-User','Intermediate','Expert'],
                                       title: 'Qualify your degree of expertise with Computer security'},
       field: {type:'string', enum:['Academic', 'Industrial'], title: 'Field of work'},
-      company: {type:'string', title: 'Company (optional)'}
+      company: {type:'string', title: 'Company (optional)'},
+
+      tlsHelpClarify: {type:'string', enum:['Interesting point of view', 'Slightly interesting', 'No'],
+                       title: 'Evaluate the model\'s interest',
+                       description: 'Does this representation of a WebRTC identity model help you understand the situation?'},
+      tlsHelpTrust: {type:'string', enum:['Interesting point of view', 'Slightly interesting', 'No'],
+                     title: 'Evaluate the trust layer\'s interest',
+                     description: 'Does the trust layer bring a new point of view to your understanding of security issues?'},
+      tlsAgree: {type:'string', enum:['Yes', 'Some errors', 'No'],
+                 title: 'Overall, do you agree with this model?'},
+      tlsComment: {type:'string', title: 'Any comments?'},
+
+      webrtcHelpClarify: {type:'string', enum:['Interesting point of view', 'Slightly interesting', 'No'],
+                       title: 'Evaluate the model\'s interest',
+                       description: 'Does this representation of a WebRTC identity model help you understand the situation?'},
+      webrtcHelpTrust: {type:'string', enum:['Interesting point of view', 'Slightly interesting', 'No'],
+                     title: 'Evaluate the trust layer\'s interest',
+                     description: 'Does the trust layer bring a new point of view to your understanding of security issues?'},
+      webrtcAgree: {type:'string', enum:['Yes', 'Some errors', 'No'],
+                 title: 'Overall, do you agree with this model?'},
+      webrtcComment: {type:'string', title: 'Any comments?'}
     },
 
     'required': [
@@ -293,8 +333,7 @@ angular.module('trustModelFormApp')
             ]
           }
         ]
-    },
-
+    }
   ],
   [
     {key: 'lockColor',
@@ -459,8 +498,100 @@ angular.module('trustModelFormApp')
 
   ],
   [],// Model description
-  [], // Model example 1
-  [] // Model example 2
+  // Model Example 1 -- TLS
+  [{type: 'fieldset', // Personal Informations
+            title: 'Model evaluation'},
+       {"type": "section",
+           "htmlClass": "row",
+           "items": [
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {"key": "tlsHelpClarify",
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                     "type": "radiobuttons"
+                 },
+                 {key: 'tlsAgree',
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                   "type": "radiobuttons"
+                 }
+               ]
+             },
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {"key": "tlsHelpTrust",
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                   "type": "radiobuttons"
+                 },
+                 {
+                   "key": "tlsComment",
+                   "type": "textarea",
+                   "placeholder": "Comment"
+                 },
+               ]
+             }
+           ]
+       }
+  ],
+  // Model Example 2 -- WebRTC
+  [{type: 'fieldset', // Personal Informations
+            title: 'Model evaluation'},
+       {"type": "section",
+           "htmlClass": "row",
+           "items": [
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {"key": "webrtcHelpClarify",
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                     "type": "radiobuttons"
+                 },
+                 {key: 'webrtcAgree',
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                   "type": "radiobuttons"
+                 }
+               ]
+             },
+             {
+               "type": "section",
+               "htmlClass": "col-xs-6",
+               "items": [
+                 {"key": "webrtcHelpTrust",
+                   "style": {
+                     "selected": "btn-success",
+                     "unselected": "btn-default"
+                   },
+                   "type": "radiobuttons"
+                 },
+                 {
+                   "key": "webrtcComment",
+                   "type": "textarea",
+                   "placeholder": "Comment"
+                 },
+               ]
+             }
+           ]
+       }
+  ],
   ]
 
   $scope.nextAction = {type: 'button', style: 'btn-info', title: 'Next', onClick: 'next()'}
@@ -522,6 +653,7 @@ angular.module('trustModelFormApp')
       // Then we check if the form is valid
       //if ($scope.form.$valid) {
         // ... do whatever you need to do with your data.
+      $scope.model.timestamp = Date.now()
       var xhttp = new XMLHttpRequest();
       xhttp.open("POST", "http://localhost:3000/survey", true);
       xhttp.setRequestHeader("Content-type", "application/json");

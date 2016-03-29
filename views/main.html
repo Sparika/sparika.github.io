@@ -94,64 +94,75 @@
 
   <div ng-if="page == '6'">
     <legend>Model 1 - Transport Layer Security decomposition</legend>
-    <form class="col-md-4" name="modelControl" ng-controller="ModelFormController">
-      <label>
-        <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha256" ng-change="onTLSModelChange()">
-        TLS with RSA2048-AES256-SHA256
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{rsa2048aes256sha256}}</li>
-        <li>Our model computes it as trust 1</li>
-      </ul>
-      <label>
-        <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha1" ng-change="onTLSModelChange()">
-        TLS with RSA2048-AES256-SHA1
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{rsa2048aes256sha1}}</li>
-        <li>Our model computes it as trust 0</li>
-      </ul>
-      <label>
-        <input type="radio" ng-model="tlschoice.name" value="rsa1024aes256sha256" ng-change="onTLSModelChange()">
-        TLS with RSA1024-AES256-SHA256
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{rsa1024aes256sha256}}</li>
-        <li>Our model computes it as trust 0</li>
-      </ul>
-    </form>
+
+    <div class="col-md-4" ng-controller="ModelFormController">
+      <form name="modelControl">
+        <label>
+          <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha256" ng-change="onTLSModelChange()">
+          TLS with RSA2048-AES256-SHA256
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{rsa2048aes256sha256}}</li>
+          <li>Our model computes it as trust 1</li>
+        </ul>
+        <label>
+          <input type="radio" ng-model="tlschoice.name" value="rsa2048aes256sha1" ng-change="onTLSModelChange()">
+          TLS with RSA2048-AES256-SHA1
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{rsa2048aes256sha1}}</li>
+          <li>Our model computes it as trust 0</li>
+        </ul>
+        <label>
+          <input type="radio" ng-model="tlschoice.name" value="rsa1024aes256sha256" ng-change="onTLSModelChange()">
+          TLS with RSA1024-AES256-SHA256
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{rsa1024aes256sha256}}</li>
+          <li>Our model computes it as trust 0</li>
+        </ul>
+      </form>
+      <br/>
+      <div class="modelDescription"  ng-if="displayModelTip()">
+        {{modelTip}}
+      </div>
+    </div>
   </div>
 
 
 
   <div ng-if="page == '7'" >
     <legend>Model 2 - WebRTC Communication Setup decomposition</legend>
-    <form class="col-md-4" name="modelControl" ng-controller="ModelFormController">
-      <label>
-        <input type="radio" ng-model="trustChoice.name" value="all" ng-change="onTrustModelChange()">
-        A WebRTC conversation
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{webRTC}}</li>
-        <li>Our model computes it as trust 0</li>
-      </ul>
-      <label>
-        <input type="radio" ng-model="trustChoice.name" value="nocsp" ng-change="onTrustModelChange()">
-        A WebRTC conversation with an untrusted CSP
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{webRTCwtID}}</li>
-        <li>Our model computes it as trust 1</li>
-      </ul>
-      <label>
-        <input type="radio" ng-model="trustChoice.name" value="noidp" ng-change="onTrustModelChange()">
-        A WebRTC conversation with an untrusted IdP
-      </label>
-      <ul>
-        <li>You estimated this configuration at trust {{webRTCwutID}}</li>
-        <li>Our model computes it as trust 0</li>
-      </ul>
-    </form>
+    <div class="col-md-4" ng-controller="ModelFormController">
+      <form  name="modelControl">
+        <label>
+          <input type="radio" ng-model="trustChoice.name" value="all" ng-change="onTrustModelChange()">
+          A WebRTC conversation
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{webRTC}}</li>
+        </ul>
+        <label>
+          <input type="radio" ng-model="trustChoice.name" value="nocsp" ng-change="onTrustModelChange()">
+          A WebRTC conversation with a trusted IdP
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{webRTCwtID}}</li>
+        </ul>
+        <label>
+          <input type="radio" ng-model="trustChoice.name" value="noidp" ng-change="onTrustModelChange()">
+          A WebRTC conversation with an untrusted IdP
+        </label>
+        <ul>
+          <li>You estimated this configuration at trust {{webRTCwutID}}</li>
+        </ul>
+      </form>
+      <br/>
+      <div class="modelDescription" ng-if="displayModelTip()">
+        {{modelTip}}
+      </div>
+
+    </div>
   </div>
 
   <div class="viz col-md-8" id="viz-div"></div>

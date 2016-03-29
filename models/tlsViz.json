@@ -12,7 +12,7 @@
         "Y": "B",
         "children": [
             {"name": "TLS",
-            "op": "AVG",
+            "op": "null",
             "children": [
                 {"name": "confAB",
                 "altname": "conf/int/auth",
