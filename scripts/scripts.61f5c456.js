@@ -202,7 +202,7 @@ angular.module('trustModelFormApp')
                 description:'For instance a gaming web-page, with integrated WebRTC service and authentication through the gaming page only, '+
                 'i.e. the website is responsible for authenticating users.'},
       webRTCwtID:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
-                   title: 'You use a WebRTC service integrated into a web-page, but delegating authentication to a third party.',
+                   title: 'You use a WebRTC service integrated into a web-page, but delegating authentication to a trusted third party.',
                    description:'Similar to the previous use-case, however you get an identity assertion, asserting that '+
                    'the other participant was authenticated through an Identity Provider you trust.'},
       webRTCwutID:  {type:'string',enum:['0','1','2','3','4','5','6','7','8','9','10'],
@@ -655,7 +655,7 @@ angular.module('trustModelFormApp')
         // ... do whatever you need to do with your data.
       $scope.model.timestamp = Date.now()
       var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "http://localhost:3000/survey", true);
+      xhttp.open("POST", "http://trustsurvey.rethink2.orange-labs.fr/survey", true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.setRequestHeader( 'Access-Control-Allow-Origin', '*');
       xhttp.send(JSON.stringify($scope.model));
