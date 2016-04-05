@@ -33,10 +33,10 @@ angular
                 controller  : 'MainCtrl',
                 activeTab: 'survey'
             })
-            .otherwise({ redirectTo: function() {window.location = '/0'} });
+            .otherwise({ redirectTo: function() {window.location = '/#0'} });
 
 
-        $locationProvider.html5Mode(true)
+        //$locationProvider.html5Mode(true)
   })
 
 'use strict';
@@ -96,9 +96,11 @@ angular.module('trustModelFormApp')
         tlsModel: {
           'rsa2048aes256sha256': "",
           'rsa2048aes256sha1': "In this configuration, SHA-1 is weak. With an estimated entropy of 53bits for a "+
-                               "recommended value of 200bits ... (tbc)",
+                               "recommended value of 200bits, the trust of the SHA component is set a 't=0'. This "+
+                                "make the whole TLS component at trust 0 through the MIN operator on AES.",
           'rsa1024aes256sha256': "In this configuration, RSA is weak as it is using a 1024bits key. The recommended size"+
-                                 " for factoring modulus algorithm is 2000bits of entropy. ... (tbc)"},
+                                 " for factoring modulus algorithm is 2000bits, the trust of the RSA component is set a 't=0'. "+
+                                  " This make the whole TLS component at trust 0 through the MIN operator on AES."},
         trustModel: {
           'all': "This is a standard WebRTC configuration. In this scenario, the IdP and CSP are the same actors and thus"+
                  " share the same trust level. Trust on the overall system is entirely dependent on trust given to the CSP/IdP.",
@@ -341,8 +343,14 @@ angular.module('trustModelFormApp')
     {type: 'fieldset', // Personal Informations
       items: [{type: 'help',
               helpvalue: '<br><b>Regarding SHA algorithms, how would you evaluate their respective security on a scale of 0-10?</b>'+
-                          '<div class="help-block">On this scale 0 represents a compromised security level, '+
-                           'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
+                          '<div class="help-block">'+
+                            'In the following questions and the rest of the survey, we ask you to evaluate security configurations on a scale of '+
+                            '0-10. It has been demonstrated that perfect security is an impracticable goal, so that only imperfect security can be '+
+                            'achieved. On our scale, 10 represents a "good-enough" security level deterring most attacks. i.e. a higher security level '+
+                            'would not make a noticeable difference or would be impracticable. Similarly, 0 represents a weak security level, '+
+                            'vulnerable to plausible attack. i.e. a weaker security configuration would not make any difference on the effective '+
+                            'security provided.'+
+                          '</div>'}]
     },
      {"type": "section",
              "htmlClass": "row",
@@ -371,8 +379,8 @@ angular.module('trustModelFormApp')
   [{type: 'fieldset', // Personal Informations
          items: [{type: 'help',
                  helpvalue: '<br><b>How would you evaluate the security of the following algorithms on a scale of 0-10?</b>'+
-                            '<div class="help-block">On this scale 0 represents a compromised security level, '+
-                            'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
+                            '<div class="help-block">On this scale 0 represents a weak or compromised security level, '+
+                            'while 10 stands for an optimal security level.</div>'}]
        },
      {"type": "section",
              "htmlClass": "row",
@@ -402,8 +410,8 @@ angular.module('trustModelFormApp')
      {type: 'fieldset', // Personal Informations
               items: [{type: 'help',
                       helpvalue: '<br><br><b>How would you evaluate the security of the following TLS configurations, on a scale of 0-10?</b>'+
-                                  '<div class="help-block">On this scale 0 represents a compromised security level, '+
-                                  'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
+                                  '<div class="help-block">On this scale 0 represents a weak or compromised security level, '+
+                                  'while 10 stands for an optimal security level.</div>'}]
             },
 
      {"type": "section",
@@ -438,10 +446,12 @@ angular.module('trustModelFormApp')
   ],
   [{type: 'fieldset', // Personal Informations
                  items: [{type: 'help',
-                         helpvalue: '<br><br><b>How would you evaluate the security of the following communication scenarios, '+
+                         helpvalue: '<br><br><b>How would you evaluate the trust you would have in the following communication scenarios, '+
                                      'on a scale of 0-10?</b>'+
-                                     '<div class="help-block">On this scale 0 represents a compromised security level, '+
-                                     'not secure enough for real use-case, while 10 stands for an optimal security level.</div>'}]
+                                     '<div class="help-block">'+
+                                      '<p>On this scale, 10 represents an absolute trust that actors in the communications setup are not breaching, '+
+                                       'or are not able to breach, you communication privacy. While 0 stands for a total '+
+                                       'distrust. i.e. an attack could be mounted as with a weak security level.</p></div>'}]
       },
 
            {"type": "section",

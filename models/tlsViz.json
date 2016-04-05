@@ -41,9 +41,9 @@
                           "X": "A",
                           "Y": "B",
                           "children": [
-                            {"name": "SHA256",
+                            {"name": "SHA",
                               "op": "null",
-                              "altname": "SHA256",
+                              "altname": "SHA",
                               "children": [
                                 {"name": "sha_key","value": 256, "type":"hash"}
                               ]}
