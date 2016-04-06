@@ -38,13 +38,13 @@
 <div class="page" ng-if="page == '2'">
   <legend>Scenario 1 - Weak certificate chain</legend>
 
-  <p>A certificate chain is an ordered hierarchy of digital certificates. In the chain, each certificates is signed by
+  <!--<p>A certificate chain is an ordered hierarchy of digital certificates. In the chain, each certificates is signed by
     a higher level certificate. The top-level certificate is provided by a root certificate authority. This mechanism
     of trust propagation, allows an individuals to verify the validity of a certificate without direct trust in the
     certificate's issuer.</p>
 
   <p>In practice, root certificates are pre-loaded by browser vendors. When verifying a certificate provided by a web-server,
-  a web-browser must verify the validity of the whole certificate chain.</p>
+  a web-browser must verify the validity of the whole certificate chain.</p>-->
 
   <p>The Secure Hash Algorithm (SHA) family is often used to sign certificates. SHA-1 is now deemed unsecure and is
   gradually withdrawn from use by Certificate Authority as well as browser vendors.</p>
@@ -75,8 +75,8 @@
 <div class="page" ng-if="page == '4'">
   <legend>Scenario 3 - Audio-Video communications</legend>
 
-  <p>We would like to compare the trust you may have in current real-time communication scenario with the trust you
-    would have in different WebRTC scenarios.</p>
+ <!-- <p>We would like to compare the trust you may have in current real-time communication scenario with the trust you
+    would have in different WebRTC scenarios.</p>-->
 
   <p>WebRTC is an API developped by the W3C for browser-to-browser communications. It allows for usages such as
     voice call, video call, and file sharing. As an API provided by web-browser it doesn't require third-party plugins
@@ -89,7 +89,7 @@
   Identity Provider (IdP). i.e. Alice would authenticate to Bob through an IdP independant from the CSP. In this case, one of the claims
   is that it is not required for users to trust CSPs in order to establish a secure communication.</p>
 
-  <img src="http://webrtc-security.github.io/images/diagram_4_en.png" width="40%" style="display:block; margin: 0 auto;"/>
+  <img src="../images/webrtc.021c416b.png" width="40%" style="display:block; margin: 0 auto;"/>
 </div>
 
 <div class="page" ng-if="page == '5'">
